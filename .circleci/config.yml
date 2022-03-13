@@ -17,12 +17,14 @@ jobs:
           echo $PWD
       - run: |
           echo "Build Docker images"
+          cd docker-seleniarm
           echo $PWD
           export BUILD_DATE=$(date '+%Y%m%d')
           export BRANCH=multi-arch-tests
           VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=arm64 make build_multi
       - run: |
           echo "Test Docker images"
+          cd docker-seleniarm
           echo $PWD
           export USE_RANDOM_USER=false
           USE_RANDOM_USER_ID=${USE_RANDOM_USER} VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=arm64 SKIP_BUILD=true make test_multi_arch
