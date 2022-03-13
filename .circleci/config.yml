@@ -2,15 +2,30 @@
 version: 2.1
 
 jobs:
-  build-medium:
+  build-and-test-multi-arch:
     machine:
       image: ubuntu-2004:202101-01
     resource_class: arm.medium
     steps:
       - run: uname -a
       - run: echo "Hello, Arm!"
+      - run: docker info
+      - run: |
+          git clone https://github.com/seleniumhq-community/docker-seleniarm.git
+          cd docker-seleniarm
+          git checkout multi-arch-tests
+      - run: |
+          echo "Build Docker images"
+          export BUILD_DATE=$(date '+%Y%m%d')
+          export BRANCH=multi-arch-tests
+          VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=arm64 make build_multi
+      - run: |
+          echo "Test Docker images"
+          export USE_RANDOM_USER=false
+          USE_RANDOM_USER_ID=${USE_RANDOM_USER} VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=arm64 SKIP_BUILD=true make test_multi_arch
+
 
 workflows:
   build:
     jobs:
-      - build-medium
+      - build-and-test-multi-arch
