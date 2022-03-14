@@ -6,6 +6,9 @@ jobs:
     machine:
       image: ubuntu-2004:current
     resource_class: medium
+    environment:
+      ARCH: amd64
+      BRANCH: multi-arch-tests
     steps:
       - run: uname -a
       - run: echo "Hello, Arm!"
@@ -20,14 +23,13 @@ jobs:
           cd docker-seleniarm
           echo $PWD
           export BUILD_DATE=$(date '+%Y%m%d')
-          export BRANCH=multi-arch-tests
-          VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=amd64 make build_multi
+          VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=${ARCH} make build_multi
       - run: |
           echo "Test Docker images"
           cd docker-seleniarm
           echo $PWD
           export USE_RANDOM_USER=false
-          USE_RANDOM_USER_ID=${USE_RANDOM_USER} VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=arm64 SKIP_BUILD=true make test_multi_arch
+          USE_RANDOM_USER_ID=${USE_RANDOM_USER} VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=${ARCH} SKIP_BUILD=true make test_multi_arch
 
 
 workflows:
