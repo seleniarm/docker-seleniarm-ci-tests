@@ -4,8 +4,8 @@ version: 2.1
 jobs:
   build-and-test-multi-arch:
     machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.medium
+      image: ubuntu-2004:current
+    resource_class: medium
     steps:
       - run: uname -a
       - run: echo "Hello, Arm!"
@@ -21,7 +21,7 @@ jobs:
           echo $PWD
           export BUILD_DATE=$(date '+%Y%m%d')
           export BRANCH=multi-arch-tests
-          VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=arm64 make build_multi
+          VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=amd64 make build_multi
       - run: |
           echo "Test Docker images"
           cd docker-seleniarm
