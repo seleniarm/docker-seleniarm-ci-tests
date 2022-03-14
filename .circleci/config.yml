@@ -5,9 +5,9 @@ jobs:
   build-and-test-multi-arch:
     machine:
       image: ubuntu-2004:current
-    resource_class: medium
+    resource_class: arm-medium
     environment:
-      ARCH: amd64
+      ARCH: arm64
       BRANCH: multi-arch-tests
     steps:
       - run: uname -a
