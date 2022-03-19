@@ -25,6 +25,12 @@ jobs:
           export BUILD_DATE=$(date '+%Y%m%d')
           VERSION=${BRANCH} BUILD_DATE=${BUILD_DATE} ARCH=${ARCH} make build_multi
       - run: |
+          echo "Use Python3 and pip3 instead of Python2.7"
+          cd docker-seleniarm
+          sed -i 's/pip /pip3 /g' tests/bootstrap.sh
+          sed -i 's/python /python3 /g' tests/bootstrap.sh
+          sed -i 's/-m pip3 /-m pip /g' tests/bootstrap.sh
+      - run: |
           echo "Test Docker images"
           cd docker-seleniarm
           echo $PWD
